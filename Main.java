@@ -9,7 +9,12 @@ public class Main
 		tree.insert(10, 1000);
 		tree.insert(30, 9000);
 		tree.insert(50, 8000);
-		tree.insert(40, 2000);
+
+		System.out.println();
+		tree.print();
+		System.out.println();
+
+		/*tree.insert(40, 2000);
 		tree.insert(60, 7000);
 		tree.insert(90, 3000);
 		tree.insert(70, 6000);
@@ -114,10 +119,10 @@ public class Main
 		else
 		{
 			System.out.println("Index empty!");
-		}
+		}*/
     }
 
-	private static void deleteValue(BPTree<Integer, Integer>tree, Integer value)
+	/*private static void deleteValue(BPTree<Integer, Integer>tree, Integer value)
 	{
 		tree.delete(value);
 		System.out.println("Structure of the tree after delete of: " + value);
@@ -137,7 +142,7 @@ public class Main
 		{
 			System.out.println("Key not found!");
 		}
-	}
+	}*/
 }
 
 /* Expected Output:

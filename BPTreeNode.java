@@ -156,6 +156,100 @@ abstract class BPTreeNode<TKey extends Comparable<TKey>, TValue>
 	 */
 	@SuppressWarnings("unchecked")
 	public BPTreeNode<TKey, TValue> insert(TKey key, TValue value) 
+	{	
+		if (this.isLeaf() == true)
+		{			
+			BPTreeLeafNode<TKey, TValue> currPtr = (BPTreeLeafNode<TKey, TValue>)this;
+			
+			if (currPtr.keyTally < m-1)
+			{
+				int i = 0;
+
+				while (key.compareTo((TKey)currPtr.keys[i]) > 0 && i < currPtr.keyTally)
+				{
+					i++;
+				}
+
+				for (int j = currPtr.keyTally; j > i; j--)
+				{
+					currPtr.keys[j] = currPtr.keys[j - 1];
+					currPtr.values[j] = currPtr.values[j - 1];
+				}
+
+				currPtr.keyTally++;
+				currPtr.keys[i] = key;
+				currPtr.values[i] = value;
+
+				return currPtr;
+			}
+			else
+			{
+				Object[] tempKeys = new Object[m];
+				Object[] tempValues = new Object[m];
+				BPTreeLeafNode<TKey, TValue> newLeafNode = new BPTreeLeafNode<TKey, TValue>(m);
+
+				for (int i = 0; i < m-1; i++)
+				{
+					tempKeys[i] = currPtr.keys[i];
+					tempValues[i] = currPtr.values[i];
+				}
+
+				int index = 0;
+
+				while (key.compareTo((TKey)tempKeys[index]) > 0 && index < m-1)
+				{
+					index++;
+				}
+
+				for (int j = m-1; j > index; j--)
+				{
+					tempKeys[j] = tempKeys[j - 1];
+					tempValues[j] = tempValues[j - 1];
+				}
+
+				tempKeys[index] = key;
+				tempValues[index] = value;
+				currPtr.keyTally = m / 2;
+				newLeafNode.keyTally = m - (m / 2);
+
+				for (int i = 0; i < currPtr.keyTally; i++)
+				{
+					currPtr.keys[i] = tempKeys[i];
+					currPtr.values[i] = tempValues[i];
+				}
+
+				for (int i = 0, j = currPtr.keyTally; i < newLeafNode.keyTally; i++, j++)
+				{
+					newLeafNode.keys[i] = tempKeys[j];
+					newLeafNode.values[i] = tempValues[j];
+				}
+
+				BPTreeInnerNode<TKey, TValue> newRoot = new BPTreeInnerNode<TKey, TValue>(m);
+				newRoot.keys[0] = newLeafNode.keys[0];
+				newRoot.references[0] = currPtr;
+				newRoot.references[1] = newLeafNode;
+				newRoot.keyTally = 1;
+
+				return newRoot;
+			}
+		}
+		else
+		{
+			
+		}
+		
+		return null;
+	}
+
+
+
+
+	/**
+	 * Insert a new key and its associated value into the B+ tree. The root node of the
+	 * changed tree should be returned.
+	 */
+	/*@SuppressWarnings("unchecked")
+	public BPTreeNode<TKey, TValue> insert(TKey key, TValue value) 
 	{
 		BPTreeInnerNode<TKey, TValue> parent = null;
 		BPTreeInnerNode<TKey, TValue> currPtr = (BPTreeInnerNode<TKey, TValue>)this;
@@ -181,7 +275,6 @@ abstract class BPTreeNode<TKey extends Comparable<TKey>, TValue>
 				}
 			}
 		}
-		
 		
 		if (currPtr.keyTally < m)
 		{
@@ -357,7 +450,7 @@ abstract class BPTreeNode<TKey extends Comparable<TKey>, TValue>
 		}
 
 		return null;
-	}
+	}*/
 
 
 
